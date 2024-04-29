@@ -4,55 +4,42 @@ public class MedianTwoSortedArrays {
 
     public static float Challenge(int[] arr1, int[] arr2) {
 
-        int current = 0;
-        int arr1Index = 0;
-        int arr2Index = 0;
         int totalSize = arr1.length + arr2.length;
+        int[] arr3 = new int[totalSize];
 
-        System.out.println(totalSize / 2);
+        int current1 = 0;
+        int current2 = 0;
+
+        for (int i = 0; i < totalSize; i++) {
+            if(current1 < arr1.length && current2 < arr2.length) {
+                if(arr1[current1] < arr2[current2]) {
+                    arr3[i] = arr1[current1];
+                    current1++;
+                } else if(arr1[current1] > arr2[current2]) {
+                    arr3[i] = arr2[current2];
+                    current2++;
+                }
+            } else {
+                if(current1 == arr1.length) {
+                    for (int j = i + 1; j < arr3.length; j++) {
+                        arr3[i] = arr2[current2];
+                        current2++;
+                    }
+                    break;
+                } else if (current2 == arr2.length) {
+                    for (int j = i; j < arr3.length; j++) {
+                        arr3[i] = arr1[current1];
+                        current1++;
+                    }
+                    break;
+                }
+            }
+        }
 
         if(totalSize % 2 == 0) {
-            int last = 0;
-
-            for (int i = 0; i <= (totalSize / 2) - 1; i++) {
-                if(arr1Index == arr1.length - 1) {
-                    current = arr2[arr2Index];
-                    arr2Index++;
-                } else if(arr2Index == arr2.length - 1) {
-                    current = arr1[arr1Index];
-                    arr1Index++;
-                } else if(arr1[arr1Index] < arr2[arr2Index]) {
-                    current = arr1[arr1Index];
-                    arr1Index++;
-                } else {
-                    current = arr2[arr2Index];
-                    arr2Index++;
-                }
-
-                if(i == totalSize / 2 - 1) {
-                    last = current;
-                }
-            }
-            System.out.println(current);
-            System.out.println(last);
-            return (float)((current + last) / 2.0);
+            return (float)((arr3[totalSize / 2] + arr3[(totalSize / 2) - 1]) / 2.0);
+        } else {
+            return arr3[(totalSize - 1) / 2];
         }
-
-        for (int i = 0; i <= (totalSize - 1) / 2; i++) {
-            if(arr1Index == arr1.length - 1) {
-                current = arr2[arr2Index];
-                arr2Index++;
-            } else if(arr2Index == arr2.length - 1) {
-                current = arr1[arr1Index];
-                arr1Index++;
-            } else if(arr1[arr1Index] < arr2[arr2Index]) {
-                current = arr1[arr1Index];
-                arr1Index++;
-            } else {
-                current = arr2[arr2Index];
-                arr2Index++;
-            }
-        }
-        return current;
     }
 }

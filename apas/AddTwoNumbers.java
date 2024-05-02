@@ -4,6 +4,18 @@ import java.util.LinkedList;
 
 public class AddTwoNumbers {
 
+    public static void main(String[] args) {
+        LinkedList<Integer> list1 = new LinkedList<Integer>() {};
+        LinkedList<Integer> list2 = new LinkedList<Integer>() {};
+        list1.add(2);
+        list1.add(4);
+        list1.add(3);
+        list2.add(5);
+        list2.add(6);
+        list2.add(4);
+
+        System.out.println(Challenge(list1, list2));
+    }
     
     public static LinkedList<Integer> Challenge(LinkedList<Integer> num1, LinkedList<Integer> num2) {
         Integer result1 = 0;
@@ -24,7 +36,7 @@ public class AddTwoNumbers {
         LinkedList<Integer> listResult = new LinkedList<Integer>();
 
         for (int i = 0; i < resultString.length(); i++) {
-            listResult.add(Integer.parseInt(resultString.substring(i, i + 1)));
+            listResult.addFirst(Integer.parseInt(resultString.substring(i, i + 1)));
         }
         return listResult;
     }

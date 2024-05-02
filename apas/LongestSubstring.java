@@ -1,8 +1,15 @@
 package apas;
 
 public class LongestSubstring {
+
+    public static void main(String[] args) {
+
+        System.out.println(Challenge("abcabcbb"));
+        System.out.println(Challenge("bbbbb"));
+        System.out.println(Challenge("pwwkew"));
+    }
     
-    public static int challenge(String str) {
+    public static int Challenge(String str) {
         int longestLength = 0;
         int start = 0;
 

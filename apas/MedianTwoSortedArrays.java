@@ -2,6 +2,14 @@ package apas;
 
 public class MedianTwoSortedArrays {
 
+    public static void main(String[] args) {
+        
+        int[] arr1 = new int[] {1, 2};
+        int[] arr2 = new int[] {3, 4};
+
+        System.out.println(Challenge(arr1, arr2));
+    }
+
     public static float Challenge(int[] arr1, int[] arr2) {
 
         int totalSize = arr1.length + arr2.length;

@@ -1,20 +1,34 @@
 package apas;
 
+import java.security.InvalidParameterException;
+
 public class TwoSum {
+
+    public static void main(String[] args) {
+        
+        int[] arr = new int[] {2, 7, 11, 15};
+        
+        int[] challengeResult = Challenge(arr, 26);
+        
+        System.out.println("[ "+challengeResult[0]+", "+challengeResult[1]+" ]");
+    }
 
     public static int[] Challenge(int[] arr, int expected) {
         
-        int[] result = new int[2];
+        int[] result = new int[] {0, arr.length - 1};
 
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                if(i == j) continue;
-                if(arr[i] + arr[j] == expected) {
-                    result[0] = j;
-                    result[1] = i;
-                }
+        while(result[0] != result[1]) {
+            int diff = arr[result[0]] + arr[result[1]] - expected;
+
+            if(diff == 0) {
+                return result;
+            } else if(diff < 0) {
+                result[0]++;
+            } else {
+                result[1]--;
             }
         }
-        return result;
+
+        throw new InvalidParameterException();
     }
 }

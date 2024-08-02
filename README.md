@@ -4,3 +4,4 @@ I've realized i need to practice my logic, so this is my atempt to complete at l
 
 ### Challenges sources:
 - APAS (from Google PlayStore)
+- Trevisan (my Bosch teacher)

@@ -125,4 +125,19 @@ public static class Enumerables
         }
     }
     
+    public static T CustomFind<T>(this IEnumerable<T> input, Func<T, bool> callback)
+    {
+        var it = input.GetEnumerator();
+
+        while(it.MoveNext())
+        {
+            if(callback(it.Current))
+            {
+                return it.Current;
+            }
+        }
+        throw new Exception("Element not found");
+    }
+
+
 }

@@ -140,4 +140,16 @@ public static class Enumerables
     }
 
 
+    public delegate R ReduceCallback<T, R>(R accumulator, T value);
+    
+    public static R CustomReduce<T, R>(this IEnumerable<T> input, ReduceCallback<T, R> callback, ref R initialValue)
+    {
+        var it = input.GetEnumerator();
+
+        while(it.MoveNext())
+        {
+            initialValue = callback(initialValue, it.Current);
+        }
+        return initialValue;
+    }
 }

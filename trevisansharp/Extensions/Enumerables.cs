@@ -73,5 +73,15 @@ public static class Enumerables
         return it.MoveNext() ? it.Current : default;
     }
 
+    public static IEnumerable<(T, R)> Zip<T, R>(this IEnumerable<T> input, IEnumerable<R> second)
+    {
+        var itFirst = input.GetEnumerator();
+        var itSecond = second.GetEnumerator();
+
+        while(itFirst.MoveNext() && itSecond.MoveNext())
+        {
+            yield return (itFirst.Current, itSecond.Current);
+        }
+    } 
 
 }

@@ -43,5 +43,25 @@ public static class Enumerables
         return array;
     }
 
-
+    public static IEnumerable<T> Append<T>(this IEnumerable<T> input, T item)
+    {
+        var it = input.GetEnumerator();
+        
+        while(it.MoveNext())
+        {
+            yield return it.Current;
+        }
+        yield return item;
+    }
+    
+    public static IEnumerable<T> PreAppend<T>(this IEnumerable<T> input, T item)
+    {
+        var it = input.GetEnumerator();
+        yield return item;
+        
+        while(it.MoveNext())
+        {
+            yield return it.Current;
+        }
+    }
 }

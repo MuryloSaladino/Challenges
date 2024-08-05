@@ -1,6 +1,6 @@
 public static class Enumerables
 {
-    public static IEnumerable<T> Take<T>(this IEnumerable<T> input, int count)
+    public static IEnumerable<T> CustomTake<T>(this IEnumerable<T> input, int count)
     {
         var it = input.GetEnumerator();
         for (int i = 0; i < count && it.MoveNext(); i++)
@@ -9,7 +9,7 @@ public static class Enumerables
         }
     }
 
-    public static IEnumerable<T> Skip<T>(this IEnumerable<T> input, int count)
+    public static IEnumerable<T> CustomSkip<T>(this IEnumerable<T> input, int count)
     {
         var it = input.GetEnumerator();
         for (int i = 0; it.MoveNext(); i++)
@@ -20,7 +20,7 @@ public static class Enumerables
         }
     }
 
-    public static int Count<T>(this IEnumerable<T> input)
+    public static int CustomCount<T>(this IEnumerable<T> input)
     {
         var it = input.GetEnumerator();
         int total = 0;
@@ -31,7 +31,7 @@ public static class Enumerables
         return total;
     }
 
-    public static T[] ToArray<T>(this IEnumerable<T> input)
+    public static T[] CustomToArray<T>(this IEnumerable<T> input)
     {
         T[] array = new T[input.Count()];
         var it = input.GetEnumerator();
@@ -43,7 +43,7 @@ public static class Enumerables
         return array;
     }
 
-    public static IEnumerable<T> Append<T>(this IEnumerable<T> input, T item)
+    public static IEnumerable<T> CustomAppend<T>(this IEnumerable<T> input, T item)
     {
         var it = input.GetEnumerator();
         
@@ -54,7 +54,7 @@ public static class Enumerables
         yield return item;
     }
 
-    public static IEnumerable<T> Prepend<T>(this IEnumerable<T> input, T item)
+    public static IEnumerable<T> CustomPrepend<T>(this IEnumerable<T> input, T item)
     {
         var it = input.GetEnumerator();
         yield return item;
@@ -65,15 +65,15 @@ public static class Enumerables
         }
     }
 
-    public static bool Empty<T>(this IEnumerable<T> input) => input.GetEnumerator().MoveNext();
+    public static bool CustomEmpty<T>(this IEnumerable<T> input) => input.GetEnumerator().MoveNext();
 
-    public static T FirstOrDefault<T>(this IEnumerable<T> input) 
+    public static T CustomFirstOrDefault<T>(this IEnumerable<T> input) 
     {
         var it = input.GetEnumerator();
         return it.MoveNext() ? it.Current : default;
     }
 
-    public static IEnumerable<(T, R)> Zip<T, R>(this IEnumerable<T> input, IEnumerable<R> second)
+    public static IEnumerable<(T, R)> CustomZip<T, R>(this IEnumerable<T> input, IEnumerable<R> second)
     {
         var itFirst = input.GetEnumerator();
         var itSecond = second.GetEnumerator();
@@ -84,7 +84,7 @@ public static class Enumerables
         }
     } 
 
-    public static IEnumerable<T[]> Chunk<T>(this IEnumerable<T> input, int size)
+    public static IEnumerable<T[]> CustomChunk<T>(this IEnumerable<T> input, int size)
     {
         var it = input.GetEnumerator();
         var currentArray = new T[size];
@@ -102,7 +102,7 @@ public static class Enumerables
         }
     }
 
-    public static IEnumerable<T> Filter<T>(this IEnumerable<T> input, Func<T, bool> callback)
+    public static IEnumerable<T> CustomFilter<T>(this IEnumerable<T> input, Func<T, bool> callback)
     {
         var it = input.GetEnumerator();
 
@@ -115,5 +115,14 @@ public static class Enumerables
         }
     }
 
+    public static IEnumerable<R> CustomSelect<T, R>(this IEnumerable<T> input, Func<T, R> callback)
+    {
+        var it = input.GetEnumerator();
+
+        while(it.MoveNext())
+        {
+            yield return callback(it.Current);
+        }
+    }
     
 }

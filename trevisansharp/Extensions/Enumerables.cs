@@ -84,4 +84,22 @@ public static class Enumerables
         }
     } 
 
+    public static IEnumerable<T[]> Chunk<T>(this IEnumerable<T> input, int size)
+    {
+        var it = input.GetEnumerator();
+        var currentArray = new T[size];
+
+        for(int i = 0; it.MoveNext(); i++)
+        {
+            currentArray[i] = it.Current;
+
+            if(i == size) 
+            {
+                yield return currentArray;
+                i = 0;
+                currentArray = new T[size];
+            }
+        }
+    }
+
 }

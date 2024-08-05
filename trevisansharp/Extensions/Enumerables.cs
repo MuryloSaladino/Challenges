@@ -53,8 +53,8 @@ public static class Enumerables
         }
         yield return item;
     }
-    
-    public static IEnumerable<T> PreAppend<T>(this IEnumerable<T> input, T item)
+
+    public static IEnumerable<T> Prepend<T>(this IEnumerable<T> input, T item)
     {
         var it = input.GetEnumerator();
         yield return item;
@@ -64,4 +64,6 @@ public static class Enumerables
             yield return it.Current;
         }
     }
+
+    
 }

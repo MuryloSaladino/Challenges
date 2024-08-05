@@ -102,4 +102,18 @@ public static class Enumerables
         }
     }
 
+    public static IEnumerable<T> Filter<T>(this IEnumerable<T> input, Func<T, bool> callback)
+    {
+        var it = input.GetEnumerator();
+
+        while(it.MoveNext())
+        {
+            if(callback(it.Current))
+            {
+                yield return it.Current;
+            }
+        }
+    }
+
+    
 }

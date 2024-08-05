@@ -65,5 +65,13 @@ public static class Enumerables
         }
     }
 
-    
+    public static bool Empty<T>(this IEnumerable<T> input) => input.GetEnumerator().MoveNext();
+
+    public static T FirstOrDefault<T>(this IEnumerable<T> input) 
+    {
+        var it = input.GetEnumerator();
+        return it.MoveNext() ? it.Current : default;
+    }
+
+
 }

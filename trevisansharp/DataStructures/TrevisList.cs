@@ -4,16 +4,64 @@ public class TrevisList<T> : ICollection<T>
 {
     const int maxSize = 32;
 
-    private Node<T> head = new Node<T>();
+    private Node head = new();
 
     public bool IsReadOnly => false;
     public int Count { get; private set; } = 0;
 
-    internal class Node<T>
+    internal class Node
     {
         internal T[] Values { get; set; } = new T[maxSize];
-        internal Node<T> Next { get; set; } = null;
+        internal Node Next { get; set; } = null;
         internal int FilledSlots { get; set; } = 0;
+
+        internal bool Remove(T item)
+        {
+            int index = IndexOf(item);
+
+            if(index > -1)
+            {
+                FilledSlots--;
+                Values[index] = default;
+
+                return true;
+            }
+            return false;
+        }
+
+        internal int IndexOf(T item)
+        {
+            for (int i = 0; i < FilledSlots; i++)
+            {
+                if(item.Equals(Values[i]))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+
+    public T this[int index]
+    {
+        get
+        {
+            var lastNode = head;
+            for(int i = 0; i < Count / index; i++)
+            {
+                lastNode = lastNode.Next;
+            }
+            return lastNode.Values[index % maxSize];
+        }
+        set
+        {
+            var lastNode = head;
+            for(int i = 0; i < Count / index; i++)
+            {
+                lastNode = lastNode.Next;
+            }
+            lastNode.Values[index % maxSize] = value;
+        }
     }
 
     public void Add(T item)
@@ -27,7 +75,7 @@ public class TrevisList<T> : ICollection<T>
 
         if(lastList.FilledSlots == maxSize)
         {
-            lastList.Next = new Node<T>();
+            lastList.Next = new Node();
             lastList = lastList.Next;
         }
 
@@ -40,32 +88,55 @@ public class TrevisList<T> : ICollection<T>
     public void Clear()
     {
         Count = 0;
-        head = new Node<T>();
+        head = new Node();
     }
 
     public bool Contains(T item)
     {
-        throw new NotImplementedException();
+        foreach(var element in this) 
+        {
+            if(item.Equals(element)) return true;
+        }
+        return false;
     }
 
     public void CopyTo(T[] array, int arrayIndex)
     {
-        throw new NotImplementedException();
+        foreach(var element in this)
+        {
+            array[arrayIndex++] = element;
+        }
     }
 
     public IEnumerator<T> GetEnumerator() => new Enumerator(head);
 
     public bool Remove(T item)
     {
-        throw new NotImplementedException();
+        var currentNode = head;
+        
+        do
+        {
+            if(currentNode.Remove(item))
+            {
+                return true;
+            }
+
+            if(currentNode.Next != null)
+            {
+                currentNode = currentNode.Next;
+            }
+        }
+        while(currentNode.Next != null);
+        
+        return false;
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private class Enumerator(Node<T> list) : IEnumerator<T>
+    private class Enumerator(Node list) : IEnumerator<T>
     {
-        private Node<T> currentList = list;
-        private Node<T> startNode = list;
+        private Node currentList = list;
+        private Node startNode = list;
         private int currentIndex = -1;
 
         public T Current => currentList.Values[currentIndex] ?? throw new IndexOutOfRangeException();

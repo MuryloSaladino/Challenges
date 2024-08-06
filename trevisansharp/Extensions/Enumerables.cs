@@ -139,10 +139,7 @@ public static class Enumerables
         throw new Exception("Element not found");
     }
 
-
-    public delegate R ReduceCallback<T, R>(R accumulator, T value);
-    
-    public static R CustomReduce<T, R>(this IEnumerable<T> input, ReduceCallback<T, R> callback, R initialValue)
+    public static R CustomReduce<T, R>(this IEnumerable<T> input, Func<R, T, R> callback, R initialValue)
     {
         var it = input.GetEnumerator();
 

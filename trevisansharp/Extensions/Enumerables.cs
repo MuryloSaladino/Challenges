@@ -149,4 +149,23 @@ public static class Enumerables
         }
         return initialValue;
     }
+
+    public static IEnumerable<T> TakeWhile<T>(this IEnumerable<T> input, Func<T, bool> predicate)
+    {
+        foreach(T element in input)
+        {
+            if(!predicate(element)) break;
+            yield return element;
+        }
+    }
+
+    public static IEnumerable<T> SkipWhile<T>(this IEnumerable<T> input, Func<T, bool> predicate)
+    {
+        foreach(T element in input)
+        {
+            if(predicate(element)) continue;
+            yield return element;
+        }
+    }
+
 }

@@ -161,10 +161,12 @@ public static class Enumerables
 
     public static IEnumerable<T> CustomSkipWhile<T>(this IEnumerable<T> input, Func<T, bool> predicate)
     {
+        bool skiping = true;
+
         foreach(T element in input)
         {
-            if(predicate(element)) continue;
-            yield return element;
+            if(skiping) skiping = predicate(element);
+            if(!skiping) yield return element;
         }
     }
 

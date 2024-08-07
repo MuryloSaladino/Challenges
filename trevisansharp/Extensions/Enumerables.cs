@@ -183,4 +183,13 @@ public static class Enumerables
         }
         return result;
     }
+
+    public static bool Any<T>(this IEnumerable<T> input, Func<T, bool> verifier)
+    {
+        foreach(T element in input)
+        {
+            if(verifier(element)) return true;
+        }
+        return false;
+    }
 }

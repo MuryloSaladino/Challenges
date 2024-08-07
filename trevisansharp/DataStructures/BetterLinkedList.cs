@@ -1,6 +1,6 @@
 using System.Collections;
 
-public class TrevisList<T> : ICollection<T>
+public class BetterLinkedList<T> : ICollection<T>
 {
     const int maxSize = 32;
 

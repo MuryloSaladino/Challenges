@@ -150,7 +150,7 @@ public static class Enumerables
         return initialValue;
     }
 
-    public static IEnumerable<T> TakeWhile<T>(this IEnumerable<T> input, Func<T, bool> predicate)
+    public static IEnumerable<T> CustomTakeWhile<T>(this IEnumerable<T> input, Func<T, bool> predicate)
     {
         foreach(T element in input)
         {
@@ -159,7 +159,7 @@ public static class Enumerables
         }
     }
 
-    public static IEnumerable<T> SkipWhile<T>(this IEnumerable<T> input, Func<T, bool> predicate)
+    public static IEnumerable<T> CustomSkipWhile<T>(this IEnumerable<T> input, Func<T, bool> predicate)
     {
         foreach(T element in input)
         {
@@ -168,4 +168,19 @@ public static class Enumerables
         }
     }
 
+    public static T CustomMaxBy<T>(this IEnumerable<T> input, Func<T, double> selector)
+    {
+        T result = input.FirstOrDefault();
+        double resultValue = selector(result);
+
+        foreach(T element in input) 
+        {
+            if(resultValue < selector(element))
+            {
+                result = element;
+                resultValue = selector(result);
+            }
+        }
+        return result;
+    }
 }

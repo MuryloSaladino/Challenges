@@ -139,6 +139,22 @@ public static class Enumerables
         throw new Exception("Element not found");
     }
 
+    public static int CustomIndexOf<T>(this IEnumerable<T> input, Func<T, bool> callback)
+    {
+        var it = input.GetEnumerator();
+        int count = 0;
+
+        while(it.MoveNext())
+        {
+            if(callback(it.Current))
+            {
+                return count;
+            }
+            count++;
+        }
+        throw new Exception("Element not found");
+    }
+
     public static R CustomReduce<T, R>(this IEnumerable<T> input, Func<R, T, R> callback, R initialValue)
     {
         var it = input.GetEnumerator();
@@ -193,5 +209,20 @@ public static class Enumerables
             if(verifier(element)) return true;
         }
         return false;
+    }
+
+    public static IEnumerable<string> Separate(this string input, char separator)
+    {
+        string current = "";
+        foreach (var c in input)
+        {
+            if(c == separator)
+            {
+                yield return current;
+                current = "";
+                continue;
+            }
+            current += c;
+        }
     }
 }

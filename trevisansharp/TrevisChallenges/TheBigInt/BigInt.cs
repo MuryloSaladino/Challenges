@@ -4,10 +4,17 @@ public class BigInt
 {
     private byte[] bytes;
 
-    
-    public BigInt(int size)
+    public BigInt(byte[] bytes)
     {
-        bytes = new byte[size];
+        this.bytes = bytes;
+    }
+    public BigInt(int start)
+    {
+        bytes = new byte[4];
+        for (int i = 0; i < 4; i++)
+        {
+            bytes[i] = (byte)(start >> (8*i));
+        }
     }
     public BigInt(long start)
     {
@@ -19,10 +26,9 @@ public class BigInt
     }
 
 
-
     public static BigInt operator +(BigInt a, BigInt b) 
     {
-        BigInt result = new BigInt(a > b ? a.bytes.Length : b.bytes.Length);
+        BigInt result = new(new byte[a > b ? a.bytes.Length : b.bytes.Length]);
         bool leftover = false;
 
         for (int i = 0; i < result.bytes.Length; i++)
@@ -39,7 +45,6 @@ public class BigInt
             result.bytes[i] = (byte)sum;
             leftover = false;
         }
-
         return result;
     }
 
@@ -102,16 +107,67 @@ public class BigInt
                 temp[i] = (byte)(current / 10);
                 remainder = current % 10;
             }
-
-            // Remove leading zeroes from the byte array
             while (temp.Count > 0 && temp[temp.Count - 1] == 0)
             {
                 temp.RemoveAt(temp.Count - 1);
             }
-
             result.Insert(0, remainder);
         }
 
         return result.Length == 0 ? "0" : result.ToString();
+    }
+}
+
+public class BigIntList
+{
+    public List<BigInt> Numbers { get; set; } = [];
+
+    public BigIntList(int size) 
+    {
+        Random rd = new(DateTime.Now.Microsecond);
+        for (int i = 0; i < size; i++)
+        {
+            Numbers.Add(new BigInt(rd.NextInt64()));
+        }
+    }
+
+    public void MergeSort() 
+    {
+        Numbers = merge(Numbers);
+    }
+
+    private List<BigInt> merge(List<BigInt> list)
+    {
+        int length = list.Count;
+        if(length == 1) return list;
+
+        int midPoint = length / 2;
+        
+        var leftHalf = merge(list[..midPoint]);
+        var rightHalf = merge(list[midPoint..]);
+
+        return merge(leftHalf, rightHalf);
+    }
+    private List<BigInt> merge(List<BigInt> left, List<BigInt> right)
+    {
+        List<BigInt> result = [];
+        int l = 0;
+        int r = 0;
+
+        while(l < left.Count && r < right.Count)
+        {
+            if(left[l] < right[r])
+            {
+                result.Add(left[l]);
+                l++;
+                continue;
+            }
+            result.Add(right[r]);
+            r++;
+        }
+        result.AddRange(left[l..]);
+        result.AddRange(right[r..]);
+
+        return result;
     }
 }

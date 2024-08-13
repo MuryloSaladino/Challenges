@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -25,6 +27,7 @@ public class BigInt
             bytes[i] = (byte)(input >> (8*i));
         }
     }
+
 
     public static BigInt operator +(BigInt a, BigInt b) 
     {
@@ -139,7 +142,15 @@ public class BigIntList
 
     public void MergeSort() 
     {
-        Numbers = Merge(Numbers);
+        int len = Numbers.Count / 4;
+        List<BigInt>[] parts = new List<BigInt>[4];
+
+        Parallel.For(0, 4, (index) => {
+            parts[index] = Merge(Numbers[(index*len)..(Numbers.Count - index * len)]);
+        });
+
+
+        Numbers = Merge(Merge(parts[0], parts[1]), Merge(parts[2], parts[3]));
     }
 
     private List<BigInt> Merge(List<BigInt> list)
@@ -164,12 +175,10 @@ public class BigIntList
         {
             if(left[l] < right[r])
             {
-                result.Add(left[l]);
-                l++;
+                result.Add(left[l++]);
                 continue;
             }
-            result.Add(right[r]);
-            r++;
+            result.Add(right[r++]);
         }
         result.AddRange(left[l..]);
         result.AddRange(right[r..]);

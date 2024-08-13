@@ -1,15 +1,16 @@
-﻿BigIntList lista = new(12);
+﻿using System.Diagnostics;
 
-foreach (var item in lista.Numbers)
-{   
-    Console.WriteLine(item);
-}
+BigIntList lista = new(40);
 
+Stopwatch sw = new Stopwatch();
+
+sw.Start();
 lista.MergeSort();
-Console.WriteLine();
+sw.Stop();
 
 foreach (var item in lista.Numbers)
 {   
     Console.WriteLine(item);
 }
 
+Console.WriteLine($"\nTempo: {sw}");

@@ -5,17 +5,11 @@ foreach (var item in lista.Numbers)
     Console.WriteLine(item);
 }
 
-var listaA = lista.Numbers[..6];
-var listaB = lista.Numbers[6..];
+lista.MergeSort();
 Console.WriteLine();
 
-
-foreach (var item in listaA)
+foreach (var item in lista.Numbers)
 {   
     Console.WriteLine(item);
 }
-Console.WriteLine();
-foreach (var item in listaB)
-{   
-    Console.WriteLine(item);
-}
+

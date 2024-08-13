@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 
 public class BigInt
@@ -8,23 +9,22 @@ public class BigInt
     {
         this.bytes = bytes;
     }
-    public BigInt(int start)
+    public BigInt(int input)
     {
         bytes = new byte[4];
         for (int i = 0; i < 4; i++)
         {
-            bytes[i] = (byte)(start >> (8*i));
+            bytes[i] = (byte)(input >> (8*i));
         }
     }
-    public BigInt(long start)
+    public BigInt(long input)
     {
         bytes = new byte[8];
         for (int i = 0; i < 8; i++)
         {
-            bytes[i] = (byte)(start >> (8*i));
+            bytes[i] = (byte)(input >> (8*i));
         }
     }
-
 
     public static BigInt operator +(BigInt a, BigInt b) 
     {
@@ -72,8 +72,8 @@ public class BigInt
 
         for (int i = a.bytes.Length - 1; i > -1; i--)
         {
-            if(a.bytes[i] > b.bytes[i])
-                return true;
+            if(a.bytes[i] != b.bytes[i])
+                return a.bytes[i] < b.bytes[i];
         }
         return false;
     }
@@ -85,8 +85,8 @@ public class BigInt
 
         for (int i = a.bytes.Length - 1; i > -1; i--)
         {
-            if(a.bytes[i] < b.bytes[i])
-                return true;
+            if(a.bytes[i] != b.bytes[i])
+                return a.bytes[i] < b.bytes[i];
         }
         return false;
     }
@@ -116,6 +116,12 @@ public class BigInt
 
         return result.Length == 0 ? "0" : result.ToString();
     }
+
+    public override bool Equals(object obj) 
+        => obj is BigInt bi && bi == this;
+
+    public override int GetHashCode()
+        => bytes.Sum(b => b);
 }
 
 public class BigIntList
@@ -133,22 +139,22 @@ public class BigIntList
 
     public void MergeSort() 
     {
-        Numbers = merge(Numbers);
+        Numbers = Merge(Numbers);
     }
 
-    private List<BigInt> merge(List<BigInt> list)
+    private List<BigInt> Merge(List<BigInt> list)
     {
         int length = list.Count;
         if(length == 1) return list;
 
         int midPoint = length / 2;
         
-        var leftHalf = merge(list[..midPoint]);
-        var rightHalf = merge(list[midPoint..]);
+        var leftHalf = Merge(list[..midPoint]);
+        var rightHalf = Merge(list[midPoint..]);
 
-        return merge(leftHalf, rightHalf);
+        return Merge(leftHalf, rightHalf);
     }
-    private List<BigInt> merge(List<BigInt> left, List<BigInt> right)
+    private List<BigInt> Merge(List<BigInt> left, List<BigInt> right)
     {
         List<BigInt> result = [];
         int l = 0;

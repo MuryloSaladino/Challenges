@@ -142,13 +142,13 @@ public class BigIntList
 
     public void MergeSort() 
     {
-        int len = Numbers.Count / 4;
+        int mid = Numbers.Count / 2;
+        int[] points = [0, (mid - mid/2), mid, mid + mid*2, Numbers.Count - 1];
         List<BigInt>[] parts = new List<BigInt>[4];
 
         Parallel.For(0, 4, (index) => {
-            parts[index] = Merge(Numbers[(index*len)..(Numbers.Count - index * len)]);
+            parts[index] = Merge(Numbers[ points[index] .. points[index+1] ]);
         });
-
 
         Numbers = Merge(Merge(parts[0], parts[1]), Merge(parts[2], parts[3]));
     }
